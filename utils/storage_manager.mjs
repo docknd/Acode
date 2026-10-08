@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 import readline from 'node:readline';
-import { stdin as input, stdout as output } from 'node:process';
+import { execPath, stdin as input, stdout as output } from 'node:process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { execSync } from 'node:child_process';
+import { execFileSync, execSync } from 'node:child_process';
 
 
 const npmPrefix = execSync('npm prefix').toString().trim();
 const pluginXmlPath = join(npmPrefix, 'src/plugins/terminal/plugin.xml');
+const cordovaCliPath = join(npmPrefix, 'node_modules', 'cordova', 'bin', 'cordova');
 const permissionLine = `        <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />`;
 const permissionRegex = /^\s*<uses-permission android:name="android\.permission\.MANAGE_EXTERNAL_STORAGE"\s*\/>\s*$/gm;
 
@@ -66,11 +67,14 @@ async function removePermission() {
 
 function updatePlugin() {
   try {
-    const prefix = execSync('npm prefix').toString().trim();
-    const pluginPath = join(prefix, 'src/plugins/terminal');
+    const pluginPath = join(npmPrefix, 'src/plugins/terminal');
 
-    execSync('cordova plugin remove com.foxdebug.acode.rk.exec.terminal', { stdio: 'inherit' });
-    execSync(`cordova plugin add "${pluginPath}"`, { stdio: 'inherit' });
+    execFileSync(
+      execPath,
+      [cordovaCliPath, 'plugin', 'remove', 'com.foxdebug.acode.rk.exec.terminal'],
+      { stdio: 'inherit' }
+    );
+    execFileSync(execPath, [cordovaCliPath, 'plugin', 'add', pluginPath], { stdio: 'inherit' });
 
     console.log('✅ Plugin updated successfully.');
   } catch (err) {
