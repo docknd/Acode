@@ -1,0 +1,269 @@
+.container.ai-copilot {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--primary-text-color);
+
+    .copilot-root {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+        background: var(--primary-color);
+    }
+
+    .copilot-header {
+        flex: 0 0 auto;
+        padding: 9px;
+        border-bottom: 1px solid var(--border-color);
+        background: var(--primary-color);
+    }
+
+    .copilot-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-width: 0;
+        font-size: 0.95rem;
+    }
+
+    .context-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        min-width: 0;
+        font-size: 0.78rem;
+        color: var(--secondary-text-color);
+
+        input {
+            accent-color: var(--active-color);
+            margin: 0;
+        }
+    }
+
+    .copilot-settings {
+        margin-top: 8px;
+        font-size: 0.82rem;
+
+        summary {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 28px;
+            color: var(--secondary-text-color);
+            cursor: pointer;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            .icon {
+                font-size: 0.95rem;
+            }
+        }
+    }
+
+    .settings-fields {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+        padding: 8px 0 2px;
+    }
+
+    .setting-field {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+        color: var(--secondary-text-color);
+        font-size: 0.75rem;
+
+        input,
+        select {
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            min-height: 34px;
+            margin: 0;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--secondary-color);
+            color: var(--primary-text-color);
+            font: inherit;
+            font-size: 0.82rem;
+        }
+    }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+        margin-top: 8px;
+
+        button {
+            min-width: 0;
+            min-height: 32px;
+            padding: 4px 3px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--secondary-color);
+            color: var(--primary-text-color);
+            font: inherit;
+            font-size: 0.72rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+
+    .copilot-messages {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        padding: 10px;
+        overflow: auto;
+        overscroll-behavior: contain;
+    }
+
+    .copilot-message {
+        min-width: 0;
+        padding: 8px;
+        border-left: 2px solid var(--border-color);
+        background: var(--secondary-color);
+        border-radius: 0 4px 4px 0;
+
+        &.user {
+            border-left-color: var(--active-color);
+        }
+    }
+
+    .message-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+        font-size: 0.78rem;
+    }
+
+    .message-copy,
+    .code-actions button {
+        min-height: 28px;
+        padding: 4px 7px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        background: transparent;
+        color: var(--primary-text-color);
+        font: inherit;
+        font-size: 0.74rem;
+    }
+
+    .message-body {
+        min-width: 0;
+        font-size: 0.85rem;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .code-proposal {
+        min-width: 0;
+        margin: 7px 0;
+
+        pre {
+            max-width: 100%;
+            margin: 0;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--primary-color);
+            color: var(--primary-text-color);
+            font-family: var(--editor-font-family, monospace);
+            font-size: 0.78rem;
+            white-space: pre;
+            overflow: auto;
+            user-select: text;
+        }
+    }
+
+    .code-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 5px;
+    }
+
+    .copilot-composer {
+        flex: 0 0 auto;
+        padding: 9px;
+        border-top: 1px solid var(--border-color);
+        background: var(--primary-color);
+
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 56px;
+            max-height: 30vh;
+            margin: 0;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--secondary-color);
+            color: var(--primary-text-color);
+            font: inherit;
+            font-size: 0.88rem;
+            resize: vertical;
+            user-select: text;
+        }
+    }
+
+    .composer-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 7px;
+        margin-top: 6px;
+
+        button {
+            min-width: 64px;
+            min-height: 34px;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--secondary-color);
+            color: var(--primary-text-color);
+            font: inherit;
+        }
+
+        .send-request {
+            border-color: var(--active-color);
+            background: var(--active-color);
+            color: var(--active-text-color, var(--primary-text-color));
+        }
+    }
+
+    .cancel-request[hidden] {
+        display: none;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 380px) {
+    .container.ai-copilot {
+        .quick-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}

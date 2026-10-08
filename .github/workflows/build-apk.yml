@@ -1,0 +1,67 @@
+name: Build Debug APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "feat/**"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-debug-apk:
+    name: Build unsigned debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out repository and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install project dependencies and configure Cordova
+        run: |
+          npm ci --no-audit --no-fund
+          npm run setup
+
+      - name: Prepare Android permissions
+        run: node utils/storage_manager.mjs --yes
+
+      - name: Build debug APK
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx1g\ -Xms256m"
+        run: npm run build -- paid dev apk
+
+      - name: Verify debug APK exists
+        run: |
+          APK_PATH="platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+          if [[ ! -f "$APK_PATH" ]]; then
+            echo "::error title=Debug APK missing::Build completed without producing $APK_PATH"
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> "$GITHUB_ENV"
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: acode-copilot-debug
+          path: ${{ env.APK_PATH }}
+          if-no-files-found: error
+          retention-days: 14
